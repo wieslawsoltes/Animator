@@ -22,7 +22,7 @@
                 <TextBlock Text="Right Click to create remove Cue" Margin="4"/>
             </StackPanel>
             
-            <Canvas Width="720" Height="300" Background="LightGray">
+            <Canvas Width="720" Height="300" ClipToBounds="True" Background="LightGray">
                 <controls:Timeline Name="Timeline1" Width="500" Height="35" Canvas.Left="60" Canvas.Top="40" Background="Transparent"/>
                 <controls:Timeline Name="Timeline2" Width="500" Height="35" Canvas.Left="0" Canvas.Top="80" Background="Transparent"/>
                 <controls:Timeline Name="Timeline3" Width="500" Height="35" Canvas.Left="120" Canvas.Top="120" Background="Transparent"/>
