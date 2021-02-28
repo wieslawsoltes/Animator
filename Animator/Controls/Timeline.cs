@@ -285,17 +285,25 @@ namespace Animator.Controls
                     case TimelineHitTestResult.Background:
                         {
                             var deltaX = position.X - _dragStart.X;
-                            var left = Canvas.GetLeft(this);
-                            Canvas.SetLeft(this, Math.Round(left + deltaX, 0));
+                            var currentLeft = Canvas.GetLeft(this);
+                            var left = Math.Round(currentLeft + deltaX, 0);
+                            if (left >= 0)
+                            {
+                                Canvas.SetLeft(this, left);
+                            }
                             _dragStart = position;
                         }
                         break;
                     case TimelineHitTestResult.LeftGrip:
                         {
                             var deltaX = position.X - _dragStart.X;
-                            var left = Canvas.GetLeft(this);
-                            Canvas.SetLeft(this,  Math.Round(left + deltaX, 0));
-                            Width =  Math.Round(Width - deltaX, 0);
+                            var currentLeft = Canvas.GetLeft(this);
+                            var left = Math.Round(currentLeft + deltaX, 0);
+                            if (left >= 0)
+                            {
+                                Canvas.SetLeft(this,  left);
+                                Width =  Math.Round(Width - deltaX, 0);
+                            }
                             UpdateRects(Width, Bounds.Height);
                             _dragStart = position;
                         }
