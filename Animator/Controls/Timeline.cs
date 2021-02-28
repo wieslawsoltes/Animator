@@ -107,7 +107,7 @@ namespace Animator.Controls
             {
                 _dragCueIndex = hitTestIndex;
                 _dragCue = true;
-                Cursor = new Cursor(StandardCursorType.Hand);
+                Cursor = new Cursor(StandardCursorType.SizeWestEast);
                 return;
             }
 
@@ -142,7 +142,7 @@ namespace Animator.Controls
                 var hitTestIndex = HitTestCue(point);
                 if (hitTestIndex >= 0)
                 {
-                    Cursor = new Cursor(StandardCursorType.Hand);
+                    Cursor = new Cursor(StandardCursorType.SizeWestEast);
                 }
                 else
                 {
