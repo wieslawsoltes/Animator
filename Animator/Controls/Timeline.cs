@@ -14,6 +14,7 @@ namespace Animator.Controls
         private ObservableCollection<double> _cues;
         private ObservableCollection<Rect> _cueRects;
         private SolidColorBrush? _cueBrush;
+        private int _cueDigitsPrecision;
         private double _cuesMarginLeft;
         private double _cuesMarginRight;
         private int _cueSize;
@@ -30,6 +31,7 @@ namespace Animator.Controls
             _cues = new ObservableCollection<double>();
             _cueRects = new ObservableCollection<Rect>();
             _cueBrush = new SolidColorBrush(Colors.Blue);
+            _cueDigitsPrecision = 3;
             _cuesMarginLeft = 20;
             _cuesMarginRight = 20;
             _cueSize = 10;
@@ -61,7 +63,7 @@ namespace Animator.Controls
         private double CalculateCue(Point point, double width)
         {
             var cue = (point.X - _cuesMarginLeft) / (width - _cuesMarginLeft - _cuesMarginRight);
-            cue = Math.Round(cue, 2);
+            cue = Math.Round(cue, _cueDigitsPrecision);
             cue = Math.Clamp(cue, 0.0, 1.0);
             return cue;
         }
@@ -88,6 +90,11 @@ namespace Animator.Controls
             return _cues.Count - 1;
         }
 
+        private void RemoveCue(int index)
+        {
+            _cues.RemoveAt(index);
+        }
+
         private void MoveCue(Point point, double width)
         {
             var cue = CalculateCue(point, width);
@@ -95,9 +102,29 @@ namespace Animator.Controls
             _dragCueIndex = AddCue(cue);
         }
 
+        private void UpdateCueRects(double width, double height)
+        {
+            _cueRects.Clear();
+
+            foreach (var cue in _cues)
+            {
+                var rect = GetCueRect(cue, width, height);
+                _cueRects.Add(rect);
+            }
+        }
+
+        private Rect GetCueRect(double cue, double width, double height)
+        {
+            var x = ((width - _cuesMarginLeft - _cuesMarginRight) * cue) - _cueSize / 2.0 + _cuesMarginLeft;
+            var y = _drawCueLabels ? _cueLabelsHeight : 0;
+            var rect = new Rect(x, y, _cueSize, height - y);
+            return rect;
+        }
+
         private void PointerPressedHandler(object? sender, PointerPressedEventArgs e)
         {
             var point = e.GetPosition(this);
+            var pointerPoint = e.GetCurrentPoint(this);
 
             if (point.X < _cuesMarginLeft || point.X > Bounds.Width - _cuesMarginRight)
             {
@@ -107,17 +134,30 @@ namespace Animator.Controls
             var hitTestIndex = HitTestCue(point);
             if (hitTestIndex >= 0)
             {
-                _dragCueIndex = hitTestIndex;
-                _dragCue = true;
-                Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                if (pointerPoint.Properties.IsLeftButtonPressed)
+                {
+                    _dragCueIndex = hitTestIndex;
+                    _dragCue = true;
+                    Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                }
+                else if (pointerPoint.Properties.IsRightButtonPressed)
+                {
+                    RemoveCue(hitTestIndex);
+                    UpdateCueRects(Bounds.Width, Bounds.Height);
+                    InvalidateVisual();
+                    Cursor = Cursor.Default;
+                }
                 return;
             }
 
-            var cue = CalculateCue(point, Bounds.Width);
-            AddCue(cue);
+            if (pointerPoint.Properties.IsLeftButtonPressed)
+            {
+                var cue = CalculateCue(point, Bounds.Width);
+                AddCue(cue);
 
-            UpdateCueRects(Bounds.Width, Bounds.Height);
-            InvalidateVisual();
+                UpdateCueRects(Bounds.Width, Bounds.Height);
+                InvalidateVisual();
+            }
         }
 
         private void PointerReleasedHandler(object? sender, PointerReleasedEventArgs e)
@@ -163,25 +203,6 @@ namespace Animator.Controls
         private void PointerLeaveHandler(object? sender, PointerEventArgs e)
         {
             Cursor = Cursor.Default;
-        }
-
-        private void UpdateCueRects(double width, double height)
-        {
-            _cueRects.Clear();
-
-            foreach (var cue in _cues)
-            {
-                var rect = GetCueRect(cue, width, height);
-                _cueRects.Add(rect);
-            }
-        }
-
-        private Rect GetCueRect(double cue, double width, double height)
-        {
-            var x = ((width - _cuesMarginLeft - _cuesMarginRight) * cue) - _cueSize / 2.0 + _cuesMarginLeft;
-            var y = _drawCueLabels ? _cueLabelsHeight : 0;
-            var rect = new Rect(x, y, _cueSize, height - y);
-            return rect;
         }
 
         public override void Render(DrawingContext context)
