@@ -18,7 +18,7 @@
         <DockPanel>
 
             <StackPanel DockPanel.Dock="Bottom">
-                <TextBlock Text="Ctrl + Left Click to create new Cue" Margin="4"/>
+                <TextBlock Text="Ctrl + Left Click or Middle Click to create new Cue" Margin="4"/>
                 <TextBlock Text="Right Click to create remove Cue" Margin="4"/>
             </StackPanel>
             
