@@ -17,7 +17,8 @@ namespace Animator.Controls
         private double _cuesMarginLeft;
         private double _cuesMarginRight;
         private int _cueSize;
-        private double _cueTextAreaSize;
+        private double _cueLabelsHeight;
+        private bool _drawCueLabels;
         private double _cueCornerRadius;
         private bool _dragCue;
         private int _dragCueIndex;
@@ -32,8 +33,9 @@ namespace Animator.Controls
             _cuesMarginLeft = 20;
             _cuesMarginRight = 20;
             _cueSize = 10;
-            _cueTextAreaSize = 20;
-            _cueCornerRadius = 3;
+            _cueLabelsHeight = 20;
+            _drawCueLabels = false;
+            _cueCornerRadius = 0;
 
             AddHandler(PointerPressedEvent, PointerPressedHandler, RoutingStrategies.Tunnel);
             AddHandler(PointerReleasedEvent, PointerReleasedHandler, RoutingStrategies.Tunnel);
@@ -177,7 +179,8 @@ namespace Animator.Controls
         private Rect GetCueRect(double cue, double width, double height)
         {
             var x = ((width - _cuesMarginLeft - _cuesMarginRight) * cue) - _cueSize / 2.0 + _cuesMarginLeft;
-            var rect = new Rect(x, _cueTextAreaSize, _cueSize, height - _cueTextAreaSize);
+            var y = _drawCueLabels ? _cueLabelsHeight : 0;
+            var rect = new Rect(x, y, _cueSize, height - y);
             return rect;
         }
 
@@ -190,25 +193,29 @@ namespace Animator.Controls
             for (var i = 0; i < _cueRects.Count; i++)
             {
                 var rect = _cueRects[i];
+
                 context.DrawRectangle(_cueBrush, null, rect, _cueCornerRadius, _cueCornerRadius);
 
-                var text = $"{(int)(_cues[i] * 100.0)}%";
-
-                var formattedText = new FormattedText()
+                if (_drawCueLabels)
                 {
-                    Typeface = typeface,
-                    Text = text,
-                    TextAlignment = TextAlignment.Center,
-                    TextWrapping = TextWrapping.NoWrap,
-                    FontSize = 10,
-                    Constraint = new Size(0, _cueTextAreaSize)
-                };
+                    var text = $"{(int) (_cues[i] * 100.0)}%";
 
-                var origin = new Point(
-                    rect.Center.X -  formattedText.Bounds.Width / 2.0, 
-                    (_cueTextAreaSize - formattedText.Bounds.Height) / 2.0);
+                    var formattedText = new FormattedText()
+                    {
+                        Typeface = typeface,
+                        Text = text,
+                        TextAlignment = TextAlignment.Center,
+                        TextWrapping = TextWrapping.NoWrap,
+                        FontSize = 10,
+                        Constraint = new Size(0, _cueLabelsHeight)
+                    };
 
-                context.DrawText(_cueBrush, origin, formattedText);
+                    var origin = new Point(
+                        rect.Center.X - formattedText.Bounds.Width / 2.0,
+                        (_cueLabelsHeight - formattedText.Bounds.Height) / 2.0);
+
+                    context.DrawText(_cueBrush, origin, formattedText);
+                }
             }
         }
     }
