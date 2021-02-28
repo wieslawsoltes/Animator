@@ -146,7 +146,6 @@ namespace Animator.Controls
                 }
                 else
                 {
-                    
                     if (point.X < _cuesMarginLeft || point.X > Bounds.Width - _cuesMarginRight)
                     {
                         Cursor = Cursor.Default;
