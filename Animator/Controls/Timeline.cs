@@ -209,9 +209,9 @@ namespace Animator.Controls
                 }
             }
 
-            if (pointerPoint.Properties.IsLeftButtonPressed)
+            if (pointerPoint.Properties.IsLeftButtonPressed || pointerPoint.Properties.IsMiddleButtonPressed)
             {
-                if (e.KeyModifiers != KeyModifiers.Control)
+                if (pointerPoint.Properties.IsLeftButtonPressed && e.KeyModifiers != KeyModifiers.Control)
                 {
                     return;
                 }
