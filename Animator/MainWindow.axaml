@@ -10,6 +10,6 @@
         Title="Animator">
     <DockPanel>
         <ListBox Items="{Binding #Timeline.Cues}" Width="150" DockPanel.Dock="Left"/>
-        <controls:Timeline Name="Timeline" Width="500" Height="30" Background="WhiteSmoke"/>
+        <controls:Timeline Name="Timeline" Width="500" Height="80" ClipToBounds="False" Background="WhiteSmoke"/>
     </DockPanel>
 </Window>
