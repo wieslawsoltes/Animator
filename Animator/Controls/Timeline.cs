@@ -15,7 +15,8 @@ namespace Animator.Controls
         private ObservableCollection<Rect> _cueRects;
         private SolidColorBrush? _cueBrush;
         private int _cueSize;
-        private double _cueCornerRadius = 3;
+        private double _cueTextAreaSize;
+        private double _cueCornerRadius;
         private bool _dragCue;
         private int _dragCueIndex;
 
@@ -27,6 +28,8 @@ namespace Animator.Controls
             _cueRects = new ObservableCollection<Rect>();
             _cueBrush = new SolidColorBrush(Colors.Blue);
             _cueSize = 10;
+            _cueTextAreaSize = 20;
+            _cueCornerRadius = 3;
 
             AddHandler(PointerPressedEvent, PointerPressedHandler, RoutingStrategies.Tunnel);
             AddHandler(PointerReleasedEvent, PointerReleasedHandler, RoutingStrategies.Tunnel);
@@ -128,7 +131,7 @@ namespace Animator.Controls
         private Rect GetCueRect(double cue, double width, double height)
         {
             var x = (width * cue) - _cueSize / 2.0;
-            var rect = new Rect(x, 0, _cueSize, height);
+            var rect = new Rect(x, _cueTextAreaSize, _cueSize, height - _cueTextAreaSize);
             return rect;
         }
 
@@ -136,9 +139,30 @@ namespace Animator.Controls
         {
             base.Render(context);
 
-            foreach (var rect in _cueRects)
+            var typeface = new Typeface(FontFamily.Default, FontStyle.Normal, FontWeight.Normal);
+
+            for (var i = 0; i < _cueRects.Count; i++)
             {
+                var rect = _cueRects[i];
                 context.DrawRectangle(_cueBrush, null, rect, _cueCornerRadius, _cueCornerRadius);
+
+                var text = $"{(int)(_cues[i] * 100)}%";
+
+                var formattedText = new FormattedText()
+                {
+                    Typeface = typeface,
+                    Text = text,
+                    TextAlignment = TextAlignment.Center,
+                    TextWrapping = TextWrapping.NoWrap,
+                    FontSize = 10,
+                    Constraint = new Size(0, _cueTextAreaSize)
+                };
+
+                var origin = new Point(
+                    rect.Center.X -  formattedText.Bounds.Width / 2.0, 
+                    (_cueTextAreaSize - formattedText.Bounds.Height) / 2.0);
+
+                context.DrawText(_cueBrush, origin, formattedText);
             }
         }
     }
