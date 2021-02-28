@@ -186,7 +186,7 @@ namespace Animator.Controls
         {
             base.Render(context);
 
-            var typeface = new Typeface(FontFamily.Default, FontStyle.Normal, FontWeight.Normal);
+            var typeface = new Typeface(FontFamily.Default);
 
             for (var i = 0; i < _cueRects.Count; i++)
             {
