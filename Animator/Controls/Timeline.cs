@@ -11,12 +11,12 @@ namespace Animator.Controls
 {
     public class Timeline : Panel
     {
-        private AnimationViewModel _animation;
+        private readonly AnimationViewModel _animation;
+        private readonly SolidColorBrush? _backgroundBrush;
+        private readonly SolidColorBrush? _gripBrush;
         private Rect _backgroundRect;
         private Rect _leftGripRect;
         private Rect _rightGripRect;
-        private SolidColorBrush? _backgroundBrush;
-        private SolidColorBrush? _gripBrush;
         private bool _drag;
         private Point _dragStart;
         private TimelineHitTestResult _dragResult;

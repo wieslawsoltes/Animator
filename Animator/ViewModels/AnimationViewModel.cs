@@ -9,15 +9,15 @@ namespace Animator.ViewModels
     public class AnimationViewModel : ReactiveObject
     {
         private ObservableCollection<KeyFrameViewModel> _keyFrames;
-        private ObservableCollection<Rect> _cueRects;
-        private SolidColorBrush? _cueBrush;
-        private int _cueDigitsPrecision;
-        private int _cueSize;
-        private double _cuesMarginLeft;
-        private double _cuesMarginRight;
-        private bool _drawCueLabels;
-        private double _cueLabelsHeight;
-        private double _cueCornerRadius;
+        private readonly ObservableCollection<Rect> _cueRects;
+        private readonly SolidColorBrush? _cueBrush;
+        private readonly int _cueDigitsPrecision;
+        private readonly int _cueSize;
+        private readonly double _cuesMarginLeft;
+        private readonly double _cuesMarginRight;
+        private readonly bool _drawCueLabels;
+        private readonly double _cueLabelsHeight;
+        private readonly double _cueCornerRadius;
         private int _dragCueIndex;
 
         public ObservableCollection<KeyFrameViewModel> KeyFrames
