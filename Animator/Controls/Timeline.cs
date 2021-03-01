@@ -194,50 +194,42 @@ namespace Animator.Controls
                 switch (_dragResult)
                 {
                     case TimelineHitTestResult.None:
+                    {
                         break;
+                    }
                     case TimelineHitTestResult.Cue:
+                    {
                         _animation.MoveCue(point, Bounds.Width);
+                        UpdateRects(Bounds.Width, Bounds.Height);
+                        InvalidateVisual();
                         break;
+                    }
                     case TimelineHitTestResult.Background:
-                        {
-                            var deltaX = position.X - _dragStart.X;
-                            var currentLeft = Canvas.GetLeft(this);
-                            var left = Math.Round(currentLeft + deltaX, 0);
-                            if (left >= 0)
-                            {
-                                Canvas.SetLeft(this, left);
-                            }
-                            _dragStart = position;
-                        }
+                    {
+                        MoveBackground(position);
+                        UpdateRects(Bounds.Width, Bounds.Height);
+                        InvalidateVisual();
+                        _dragStart = position;
                         break;
+                    }
                     case TimelineHitTestResult.LeftGrip:
-                        {
-                            var deltaX = position.X - _dragStart.X;
-                            var currentLeft = Canvas.GetLeft(this);
-                            var left = Math.Round(currentLeft + deltaX, 0);
-                            if (left >= 0)
-                            {
-                                Canvas.SetLeft(this,  left);
-                                Width =  Math.Round(Width - deltaX, 0);
-                            }
-                            UpdateRects(Width, Bounds.Height);
-                            _dragStart = position;
-                        }
+                    {
+                        MoveLeftGrip(position);
+                        UpdateRects(Width, Bounds.Height);
+                        InvalidateVisual();
+                        _dragStart = position;
                         break;
+                    }
                     case TimelineHitTestResult.RightGrip:
-                        {
-                            var deltaX = position.X - _dragStart.X;
-                            Width = Math.Round(Width + deltaX, 0);
-                            UpdateRects(Width, Bounds.Height);
-                            _dragStart = position;
-                        }
+                    {
+                        MoveRightGrip(position);
+                        UpdateRects(Width, Bounds.Height);
+                        InvalidateVisual();
+                        _dragStart = position;
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    }
                 }
                 
-                UpdateRects(Bounds.Width, Bounds.Height);
-                InvalidateVisual();
             }
             else
             {
@@ -247,6 +239,35 @@ namespace Animator.Controls
                     SetCursor(hitTestResult, e.KeyModifiers);
                 }
             }
+        }
+
+        private void MoveBackground(Point position)
+        {
+            var deltaX = position.X - _dragStart.X;
+            var currentLeft = Canvas.GetLeft(this);
+            var left = Math.Round(currentLeft + deltaX, 0);
+            if (left >= 0)
+            {
+                Canvas.SetLeft(this, left);
+            }
+        }
+
+        private void MoveLeftGrip(Point position)
+        {
+            var deltaX = position.X - _dragStart.X;
+            var currentLeft = Canvas.GetLeft(this);
+            var left = Math.Round(currentLeft + deltaX, 0);
+            if (left >= 0)
+            {
+                Canvas.SetLeft(this, left);
+                Width = Math.Round(Width - deltaX, 0);
+            }
+        }
+
+        private void MoveRightGrip(Point position)
+        {
+            var deltaX = position.X - _dragStart.X;
+            Width = Math.Round(Width + deltaX, 0);
         }
 
         private void PointerLeaveHandler(object? sender, PointerEventArgs e)
