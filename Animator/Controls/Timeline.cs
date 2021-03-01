@@ -9,15 +9,6 @@ using Avalonia.Media;
 
 namespace Animator.Controls
 {
-    public enum TimelineHitTestResult
-    {
-        None,
-        Cue,
-        Background,
-        LeftGrip,
-        RightGrip
-    }
-
     public class Timeline : Panel
     {
         private AnimationViewModel _animation;
