@@ -45,15 +45,10 @@ namespace Animator.Controls
         public Timeline()
         {
             _cues = new ObservableCollection<double>();
-
             _cueRects = new ObservableCollection<Rect>();
-
             _cueBrush = new SolidColorBrush(Colors.Blue);
-
             _backgroundBrush = new SolidColorBrush(Colors.WhiteSmoke);
-
             _gripBrush = new SolidColorBrush(Colors.WhiteSmoke, 0.6);
-
             _cueDigitsPrecision = 2;
             _cuesMarginLeft = 20;
             _cuesMarginRight = 20;
