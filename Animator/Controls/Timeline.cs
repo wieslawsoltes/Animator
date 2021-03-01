@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Animator.ViewModels;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -20,42 +20,26 @@ namespace Animator.Controls
 
     public class Timeline : Panel
     {
-        private ObservableCollection<double> _cues;
-        private ObservableCollection<Rect> _cueRects;
+        private AnimationViewModel _animation;
         private Rect _backgroundRect;
         private Rect _leftGripRect;
         private Rect _rightGripRect;
-        private SolidColorBrush? _cueBrush;
         private SolidColorBrush? _backgroundBrush;
         private SolidColorBrush? _gripBrush;
-        private int _cueDigitsPrecision;
-        private double _cuesMarginLeft;
-        private double _cuesMarginRight;
-        private int _cueSize;
-        private double _cueLabelsHeight;
-        private bool _drawCueLabels;
-        private double _cueCornerRadius;
         private bool _drag;
         private Point _dragStart;
-        private int _dragCueIndex;
         private TimelineHitTestResult _dragResult;
 
-        public IList<double> Cues => _cues;
+        public AnimationViewModel Animation => _animation;
 
         public Timeline()
         {
-            _cues = new ObservableCollection<double>();
-            _cueRects = new ObservableCollection<Rect>();
-            _cueBrush = new SolidColorBrush(Colors.Blue);
+            _animation = new AnimationViewModel()
+            {
+                KeyFrames = new ObservableCollection<KeyFrameViewModel>()
+            };
             _backgroundBrush = new SolidColorBrush(Colors.WhiteSmoke);
             _gripBrush = new SolidColorBrush(Colors.WhiteSmoke, 0.6);
-            _cueDigitsPrecision = 2;
-            _cuesMarginLeft = 20;
-            _cuesMarginRight = 20;
-            _cueSize = 10;
-            _cueLabelsHeight = 15;
-            _drawCueLabels = false;
-            _cueCornerRadius = 0;
 
             AddHandler(PointerPressedEvent, PointerPressedHandler, RoutingStrategies.Tunnel);
             AddHandler(PointerReleasedEvent, PointerReleasedHandler, RoutingStrategies.Tunnel);
@@ -67,112 +51,56 @@ namespace Animator.Controls
 
         private TimelineHitTestResult HitTest(Point point, out int index)
         {
-            index = -1;
-
-            for (var i = 0; i < _cueRects.Count; i++)
+            var cueIndex = _animation.HitTest(point);
+            if (cueIndex >= 0)
             {
-                if (_cueRects[i].Contains(point))
-                {
-                    index = i;
-                    return TimelineHitTestResult.Cue;
-                }
+                index = cueIndex;
+                return TimelineHitTestResult.Cue;
             }
 
             if (_leftGripRect.Contains(point))
             {
+                index = -1;
                 return TimelineHitTestResult.LeftGrip;
             }
 
             if (_rightGripRect.Contains(point))
             {
+                index = -1;
                 return TimelineHitTestResult.RightGrip;
             }
 
             if (_backgroundRect.Contains(point))
             {
+                index = -1;
                 return TimelineHitTestResult.Background;
             }
             
+            index = -1;
             return TimelineHitTestResult.None;
-        }
-
-        private double CalculateCue(Point point, double width)
-        {
-            var cue = (point.X - _cuesMarginLeft) / (width - _cuesMarginLeft - _cuesMarginRight);
-            cue = Math.Round(cue, _cueDigitsPrecision);
-            cue = Math.Clamp(cue, 0.0, 1.0);
-            return cue;
-        }
-
-        private int AddCue(double cue)
-        {
-            if (_cues.Count == 0)
-            {
-                _cues.Add(cue);
-                return 0;
-            }
-
-            for (var i = 0; i < _cues.Count; i++)
-            {
-                if (cue < _cues[i])
-                {
-                    _cues.Insert(i, cue);
-                    return i;
-                }
-            }
-
-            _cues.Add(cue);
-
-            return _cues.Count - 1;
-        }
-
-        private void RemoveCue(int index)
-        {
-            _cues.RemoveAt(index);
-        }
-
-        private void MoveCue(Point point, double width)
-        {
-            var cue = CalculateCue(point, width);
-            _cues.RemoveAt(_dragCueIndex);
-            _dragCueIndex = AddCue(cue);
         }
 
         private void UpdateRects(double width, double height)
         {
             _backgroundRect = new Rect(
-                _cuesMarginLeft,
+                _animation.CuesMarginLeft,
                 0,
-                Bounds.Width - _cuesMarginLeft - _cuesMarginRight,
+                Bounds.Width - _animation.CuesMarginLeft - _animation.CuesMarginRight,
                 height);
 
             _leftGripRect = new Rect(
                 0,
                 0,
-                _cuesMarginLeft,
+                _animation.CuesMarginLeft,
                 height);
 
             _rightGripRect = new Rect(
-                width - _cuesMarginRight,
+                width - _animation.CuesMarginRight,
                 0,
-                _cuesMarginRight,
+                _animation.CuesMarginRight,
                 height);
   
-            _cueRects.Clear();
-
-            foreach (var cue in _cues)
-            {
-                var rect = GetCueRect(cue, width, height);
-                _cueRects.Add(rect);
-            }
-        }
-
-        private Rect GetCueRect(double cue, double width, double height)
-        {
-            var x = ((width - _cuesMarginLeft - _cuesMarginRight) * cue) - _cueSize / 2.0 + _cuesMarginLeft;
-            var y = _drawCueLabels ? _cueLabelsHeight : 0;
-            var rect = new Rect(x, y, _cueSize, height - y);
-            return rect;
+            _animation.Invalidate(width, height);
         }
 
         private void PointerPressedHandler(object? sender, PointerPressedEventArgs e)
@@ -182,11 +110,12 @@ namespace Animator.Controls
             var pointerPoint = e.GetCurrentPoint(this);
 
             var hitTestResult = HitTest(point, out var hitTestIndex);
+
             if (hitTestResult != TimelineHitTestResult.None)
             {
                 if (pointerPoint.Properties.IsLeftButtonPressed)
                 {
-                    _dragCueIndex = hitTestIndex;
+                    _animation.BeginMoveCue(hitTestIndex);
                     _drag = true;
                     _dragResult = hitTestResult;
                     _dragStart = position;
@@ -196,7 +125,7 @@ namespace Animator.Controls
                 {
                     if (hitTestResult == TimelineHitTestResult.Cue)
                     {
-                        RemoveCue(hitTestIndex);
+                        _animation.RemoveCue(hitTestIndex);
                         UpdateRects(Bounds.Width, Bounds.Height);
                         InvalidateVisual();
                         Cursor = Cursor.Default;
@@ -211,15 +140,15 @@ namespace Animator.Controls
                     return;
                 }
                 
-                if (point.X < _cuesMarginLeft || point.X > Bounds.Width - _cuesMarginRight)
+                if (point.X < _animation.CuesMarginLeft || point.X > Bounds.Width - _animation.CuesMarginRight)
                 {
                     return;
                 }
 
-                var cue = CalculateCue(point, Bounds.Width);
-                var newCueIndex = AddCue(cue);
+                var cue = _animation.CalculateCue(point, Bounds.Width);
+                var newCueIndex = _animation.AddCue(cue);
 
-                _dragCueIndex = newCueIndex;
+                _animation.BeginMoveCue(newCueIndex);
                 _drag = true;
                 _dragResult = TimelineHitTestResult.Cue;
                 _dragStart = position;
@@ -275,7 +204,7 @@ namespace Animator.Controls
                     case TimelineHitTestResult.None:
                         break;
                     case TimelineHitTestResult.Cue:
-                        MoveCue(point, Bounds.Width);
+                        _animation.MoveCue(point, Bounds.Width);
                         break;
                     case TimelineHitTestResult.Background:
                         {
@@ -341,12 +270,7 @@ namespace Animator.Controls
             DrawLeftGrip(context);
             DrawRightGrip(context);
 
-            DrawCues(context);
-
-            if (_drawCueLabels)
-            {
-                DrawCueLabels(context);
-            }
+            _animation.Render(context);
         }
 
         private void DrawBackground(DrawingContext context)
@@ -362,42 +286,6 @@ namespace Animator.Controls
         private void DrawRightGrip(DrawingContext context)
         {
             context.DrawRectangle(_gripBrush, null, _rightGripRect);
-        }
-
-        private void DrawCues(DrawingContext context)
-        {
-            for (var i = 0; i < _cueRects.Count; i++)
-            {
-                var cueRect = _cueRects[i];
-                context.DrawRectangle(_cueBrush, null, cueRect, _cueCornerRadius, _cueCornerRadius);
-            }
-        }
-
-        private void DrawCueLabels(DrawingContext context)
-        {
-            var typeface = new Typeface(FontFamily.Default);
-
-            for (var i = 0; i < _cueRects.Count; i++)
-            {
-                var rect = _cueRects[i];
-                var text = $"{(int) (_cues[i] * 100.0)}%";
-
-                var formattedText = new FormattedText()
-                {
-                    Typeface = typeface,
-                    Text = text,
-                    TextAlignment = TextAlignment.Center,
-                    TextWrapping = TextWrapping.NoWrap,
-                    FontSize = 10,
-                    Constraint = new Size(0, _cueLabelsHeight)
-                };
-
-                var origin = new Point(
-                    rect.Center.X - formattedText.Bounds.Width / 2.0,
-                    (_cueLabelsHeight - formattedText.Bounds.Height) / 2.0);
-
-                context.DrawText(_cueBrush, origin, formattedText);
-            }
         }
     }
 }

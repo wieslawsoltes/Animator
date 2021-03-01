@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="using:Animator.Controls"
+        xmlns:c="using:Animator.Controls"
+        xmlns:vm="using:Animator.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Animator.MainWindow"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
@@ -12,7 +13,13 @@
 
         <DockPanel DockPanel.Dock="Left">
             <Label Content="Cues" DockPanel.Dock="Top"/>
-            <ListBox Items="{Binding #Timeline1.Cues}" Width="180"/>
+            <ListBox DataContext="{Binding #Timeline1.Animation}" Items="{Binding KeyFrames}" Width="180">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:KeyFrameViewModel">
+                        <TextBlock Text="{Binding Cue}"></TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
 
         <DockPanel>
@@ -23,9 +30,9 @@
             </StackPanel>
             
             <Canvas Width="720" Height="300" ClipToBounds="True" Background="LightGray">
-                <controls:Timeline Name="Timeline1" Width="500" Height="35" Canvas.Left="60" Canvas.Top="40" Background="Transparent"/>
-                <controls:Timeline Name="Timeline2" Width="500" Height="35" Canvas.Left="0" Canvas.Top="80" Background="Transparent"/>
-                <controls:Timeline Name="Timeline3" Width="500" Height="35" Canvas.Left="120" Canvas.Top="120" Background="Transparent"/>
+                <c:Timeline Name="Timeline1" Width="500" Height="35" Canvas.Left="60" Canvas.Top="40" Background="Transparent"/>
+                <c:Timeline Name="Timeline2" Width="500" Height="35" Canvas.Left="0" Canvas.Top="80" Background="Transparent"/>
+                <c:Timeline Name="Timeline3" Width="500" Height="35" Canvas.Left="120" Canvas.Top="120" Background="Transparent"/>
             </Canvas>
 
         </DockPanel>
