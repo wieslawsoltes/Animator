@@ -238,12 +238,12 @@ namespace Animator.Controls
                     Cursor = Cursor.Default;
                     break;
                 case TimelineHitTestResult.Cue:
-                    Cursor = new Cursor(StandardCursorType.Hand);
+                    Cursor = new Cursor(StandardCursorType.SizeWestEast);
                     break;
                 case TimelineHitTestResult.Background:
                     Cursor = keyModifiers == KeyModifiers.Control 
                         ? new Cursor(StandardCursorType.Cross) 
-                        : new Cursor(StandardCursorType.SizeWestEast);
+                        : new Cursor(StandardCursorType.Hand);
                     break;
                 case TimelineHitTestResult.LeftGrip:
                     Cursor = new Cursor(StandardCursorType.Hand);
