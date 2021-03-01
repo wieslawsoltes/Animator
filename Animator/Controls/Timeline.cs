@@ -275,17 +275,6 @@ namespace Animator.Controls
             Cursor = Cursor.Default;
         }
 
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-
-            DrawBackground(context);
-            DrawLeftGrip(context);
-            DrawRightGrip(context);
-
-            _animation.Render(context);
-        }
-
         private void DrawBackground(DrawingContext context)
         {
             context.DrawRectangle(_backgroundBrush, null, _backgroundRect);
@@ -299,6 +288,17 @@ namespace Animator.Controls
         private void DrawRightGrip(DrawingContext context)
         {
             context.DrawRectangle(_gripBrush, null, _rightGripRect);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            DrawBackground(context);
+            DrawLeftGrip(context);
+            DrawRightGrip(context);
+
+            _animation.Render(context);
         }
     }
 }
