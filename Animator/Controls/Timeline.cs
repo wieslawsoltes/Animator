@@ -29,6 +29,7 @@ namespace Animator.Controls
             {
                 KeyFrames = new ObservableCollection<KeyFrameViewModel>()
             };
+
             _backgroundBrush = new SolidColorBrush(Colors.WhiteSmoke);
             _gripBrush = new SolidColorBrush(Colors.WhiteSmoke, 0.6);
 
