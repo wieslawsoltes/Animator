@@ -127,7 +127,7 @@ namespace Animator
                     }
                 }
             };
-            
+
             var rectangle1 = this.FindControl<Rectangle>("Rectangle1");
             var rectangle2 = this.FindControl<Rectangle>("Rectangle2");
             var slider = this.FindControl<Slider>("Slider");
