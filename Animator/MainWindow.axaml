@@ -19,12 +19,21 @@
             </Style.Animations>
         </Style>
     </Window.Styles>
-    <DockPanel> 
-        <Slider Name="Slider" 
-                Minimum="0" Maximum="2000" Value="0" 
-                TickFrequency="1" IsSnapToTickEnabled="True" 
-                SmallChange="1" LargeChange="10"
-                DockPanel.Dock="Bottom"/>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+           <NumericUpDown Name="NumericUpDown"
+                          Value="{Binding #Slider.Value}"
+                          VerticalAlignment="Center"
+                          Increment="1"
+                          Minimum="0" Maximum="2000"
+                          Margin="4"
+                          DockPanel.Dock="Right"/>
+            <Slider Name="Slider" 
+                    Minimum="0" Maximum="2000" Value="0" 
+                    TickFrequency="1" IsSnapToTickEnabled="True" 
+                    SmallChange="1" LargeChange="10"
+                    Margin="4"/>
+        </DockPanel>
         <Panel Name="Panel">
             <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red"/>
             <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red"/>
