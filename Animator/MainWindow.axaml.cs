@@ -105,7 +105,7 @@ namespace Animator
 
             var clock = new TimelineClock();
 
-            slider.GetObservable(Slider.ValueProperty).Subscribe(x =>
+            slider.GetObservable(RangeBase.ValueProperty).Subscribe(x =>
             {
                 clock.Step(TimeSpan.FromMilliseconds(x));
             });
