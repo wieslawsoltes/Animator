@@ -2,41 +2,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:c="using:Animator.Controls"
-        xmlns:vm="using:Animator.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400"
         x:Class="Animator.MainWindow"
-        WindowState="Normal" WindowStartupLocation="CenterScreen"
-        Width="1000" Height="650"
         Title="Animator">
-    <DockPanel>
-
-        <DockPanel DockPanel.Dock="Left">
-            <Label Content="Cues" DockPanel.Dock="Top"/>
-            <ListBox DataContext="{Binding #Timeline1.Animation}" Items="{Binding KeyFrames}" Width="180">
-                <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="vm:KeyFrameViewModel">
-                        <TextBlock Text="{Binding Cue}"></TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </DockPanel>
-
-        <DockPanel>
-
-            <StackPanel DockPanel.Dock="Bottom">
-                <TextBlock Text="Ctrl + Left Click or Middle Click to create new Cue" Margin="4"/>
-                <TextBlock Text="Right Click to create remove Cue" Margin="4"/>
-            </StackPanel>
-            
-            <Canvas Width="720" Height="300" ClipToBounds="True" Background="LightGray">
-                <c:Timeline Name="Timeline1" Width="500" Height="35" Canvas.Left="60" Canvas.Top="40" Background="Transparent"/>
-                <c:Timeline Name="Timeline2" Width="500" Height="35" Canvas.Left="0" Canvas.Top="80" Background="Transparent"/>
-                <c:Timeline Name="Timeline3" Width="500" Height="35" Canvas.Left="120" Canvas.Top="120" Background="Transparent"/>
-            </Canvas>
-
-        </DockPanel>
-    
+    <Window.Styles>
+        <Style Selector="Rectangle.animation">
+            <Style.Animations>
+                <Animation Duration="0:0:2" IterationCount="INFINITE">
+                    <KeyFrame KeyTime="0:0:0">
+                        <Setter Property="RotateTransform.Angle" Value="0"/>
+                    </KeyFrame>
+                    <KeyFrame KeyTime="0:0:2">
+                        <Setter Property="RotateTransform.Angle" Value="360"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
+    <DockPanel> 
+        <Slider Name="Slider" 
+                Minimum="0" Maximum="2000" Value="0" 
+                TickFrequency="1" IsSnapToTickEnabled="True" 
+                SmallChange="1" LargeChange="10"
+                DockPanel.Dock="Bottom"/>
+        <Panel Name="Panel">
+            <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red"/>
+            <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red"/>
+            <!-- <Rectangle Classes="animation" Name="Rectangle" Width="100" Height="100" Fill="Red"/> -->
+        </Panel>  
     </DockPanel>
-
 </Window>
