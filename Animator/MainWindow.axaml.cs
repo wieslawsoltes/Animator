@@ -138,7 +138,7 @@ namespace Animator
             {
                 clock.Step(TimeSpan.FromMilliseconds(x));
             });
-#if true
+#if false
             animation1.RunAsync(rectangle1);
             animation2.RunAsync(rectangle2);
 #else
