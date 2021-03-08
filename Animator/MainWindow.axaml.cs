@@ -56,7 +56,10 @@ namespace Animator
             _slider.GetObservable(RangeBase.ValueProperty).Subscribe(x =>
             {
                 //_timelineClock.Step(TimeSpan.FromMilliseconds(x));
-                _playbackClock.Step(TimeSpan.FromMilliseconds(x));
+                if (_playbackClock.PlayState == PlayState.Pause)
+                {
+                    _playbackClock.Step(TimeSpan.FromMilliseconds(x));
+                }
             });
 
             _playbackClock.Subscribe(x =>
