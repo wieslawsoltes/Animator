@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400"
         x:Class="Animator.MainWindow"
+        Name="MainWindow"
         Title="Animator">
     <Window.Styles>
         <Style Selector="Rectangle.animation">
@@ -21,13 +22,28 @@
     </Window.Styles>
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
-           <NumericUpDown Name="NumericUpDown"
-                          Value="{Binding #Slider.Value}"
-                          VerticalAlignment="Center"
-                          Increment="1"
-                          Minimum="0" Maximum="2000"
-                          Margin="4"
-                          DockPanel.Dock="Right"/>
+            <Label Content="{Binding #Rectangle1.Clock^}"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   VerticalAlignment="Stretch"
+                   Width="140"
+                   Margin="4"
+                   DockPanel.Dock="Right"/>
+            <Button Name="PlayButton"
+                    Content="Play"
+                    Click="PlayButton_OnClick"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Width="60"
+                    Margin="4"
+                    DockPanel.Dock="Right"/>
+            <NumericUpDown Name="NumericUpDown"
+                           Value="{Binding #Slider.Value}"
+                           VerticalAlignment="Center"
+                           Increment="1"
+                           Minimum="0" Maximum="2000"
+                           Margin="4"
+                           DockPanel.Dock="Right"/>
             <Slider Name="Slider" 
                     Minimum="0" Maximum="2000" Value="0" 
                     TickFrequency="1" IsSnapToTickEnabled="True" 
