@@ -97,11 +97,11 @@ namespace Animator
                     return;
                 }
                 _sync = true;
-                var milliseconds = x.TotalMilliseconds % (4000 + 1);
+                var milliseconds = x.TotalMilliseconds % (_maximum + 1);
                 _slider.Value = milliseconds;
                 _sync = false;
             });
-            
+
             CreateAnimation1();
             CreateAnimation2();
 
