@@ -40,14 +40,9 @@
             <NumericUpDown Name="NumericUpDown"
                            Value="{Binding #Slider.Value}"
                            VerticalAlignment="Center"
-                           Increment="1"
-                           Minimum="0" Maximum="2000"
                            Margin="4"
                            DockPanel.Dock="Right"/>
             <Slider Name="Slider" 
-                    Minimum="0" Maximum="2000" Value="0" 
-                    TickFrequency="1" IsSnapToTickEnabled="True" 
-                    SmallChange="1" LargeChange="10"
                     Margin="4"/>
         </DockPanel>
         <Panel Name="Panel">
