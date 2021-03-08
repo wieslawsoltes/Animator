@@ -25,6 +25,7 @@ namespace Animator
         private Rectangle? _rectangle2;
         private Button? _playButton;
         private Slider? _slider;
+        private NumericUpDown? _numericUpDown;
         private PlaybackMode _playbackMode;
         private bool _isPlaying;
         private TimelineClock _timelineClock;
@@ -34,6 +35,9 @@ namespace Animator
         private Animation? _animation2;
         private IDisposable _disposable1;
         private IDisposable? _disposable2;
+        private double _minimum;
+        private double _maximum;
+        private double _step;
 
         public MainWindow()
         {
@@ -44,6 +48,9 @@ namespace Animator
             _timelineClock = new TimelineClock();
             _playbackClock = new Clock1();
             _animationTrigger = new Subject<bool>();
+            _minimum = 0;
+            _maximum = 4000;
+            _step = 1;
 
             _rectangle1 = this.FindControl<Rectangle>("Rectangle1");
             _rectangle1.Clock = _playbackClock;
@@ -51,7 +58,20 @@ namespace Animator
             _rectangle2.Clock = _playbackClock;
             
             _playButton = this.FindControl<Button>("PlayButton");
+            
             _slider = this.FindControl<Slider>("Slider");
+            _slider.Minimum = _minimum;
+            _slider.Maximum = _maximum;
+            _slider.SmallChange = _step;
+            _slider.LargeChange = _step;
+            _slider.TickFrequency = _step;
+            _slider.IsSnapToTickEnabled = true;
+            _slider.Value = _minimum;
+
+            _numericUpDown = this.FindControl<NumericUpDown>("NumericUpDown");
+            _numericUpDown.Minimum = _minimum;
+            _numericUpDown.Maximum = _maximum;
+            _numericUpDown.Increment = _step;
 
             bool _sync = false;
             
@@ -77,7 +97,7 @@ namespace Animator
                     return;
                 }
                 _sync = true;
-                var milliseconds = x.TotalMilliseconds % (2000 + 1);
+                var milliseconds = x.TotalMilliseconds % (4000 + 1);
                 _slider.Value = milliseconds;
                 _sync = false;
             });
