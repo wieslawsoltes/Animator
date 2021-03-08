@@ -53,19 +53,33 @@ namespace Animator
             _playButton = this.FindControl<Button>("PlayButton");
             _slider = this.FindControl<Slider>("Slider");
 
+            bool _sync = false;
+            
             _slider.GetObservable(RangeBase.ValueProperty).Subscribe(x =>
             {
                 //_timelineClock.Step(TimeSpan.FromMilliseconds(x));
+                if (_sync)
+                {
+                    return;
+                }
+                _sync = true;
                 if (_playbackClock.PlayState == PlayState.Pause)
                 {
                     _playbackClock.Step(TimeSpan.FromMilliseconds(x));
                 }
+                _sync = false;
             });
 
             _playbackClock.Subscribe(x =>
             {
+                if (_sync)
+                {
+                    return;
+                }
+                _sync = true;
                 var milliseconds = x.TotalMilliseconds % (2000 + 1);
                 _slider.Value = milliseconds;
+                _sync = false;
             });
             
             CreateAnimation1();
