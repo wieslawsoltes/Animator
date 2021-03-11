@@ -28,8 +28,8 @@
                     <Style Selector="TreeViewItem">
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="4"/>
-                        <Setter Property="BorderBrush" Value="White"/>
-                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="DarkGray"/>
+                        <Setter Property="BorderThickness" Value="1,1,1,1"/>
                     </Style>
                 </TreeView.Styles>
                 <TreeViewItem Header="animation1" IsExpanded="True">
@@ -47,8 +47,8 @@
                     <Style Selector="ListBoxItem">
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="4"/>
-                        <Setter Property="BorderBrush" Value="White"/>
-                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="DarkGray"/>
+                        <Setter Property="BorderThickness" Value="1,1,1,1"/>
                     </Style>
                 </ListBox.Styles>
                 <ListBoxItem Content="-"/>
@@ -92,8 +92,8 @@
                     <Style Selector="TreeViewItem">
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="4"/>
-                        <Setter Property="BorderBrush" Value="White"/>
-                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="DarkGray"/>
+                        <Setter Property="BorderThickness" Value="1,1,1,1"/>
                     </Style>
                 </TreeView.Styles>
                 <TreeViewItem Header="Panel1" IsExpanded="True">
