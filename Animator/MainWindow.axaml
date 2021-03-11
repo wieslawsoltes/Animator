@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
         x:Class="Animator.MainWindow"
         Name="MainWindow"
         Title="Animator">
@@ -21,6 +21,46 @@
         </Style>
     </Window.Styles>
     <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+
+            <TreeView Name="AnimationTreeView" DockPanel.Dock="Left">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="4"/>
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Style>
+                </TreeView.Styles>
+                <TreeViewItem Header="animation1" IsExpanded="True">
+                    <TreeViewItem Header="Visual.OpacityProperty"/>
+                    <TreeViewItem Header="RotateTransform.AngleProperty"/>
+                </TreeViewItem>
+                <TreeViewItem Header="animation2" IsExpanded="True">
+                    <TreeViewItem Header="Visual.OpacityProperty"/>
+                    <TreeViewItem Header="RotateTransform.AngleProperty"/>
+                </TreeViewItem>
+            </TreeView>
+
+            <ListBox Name="TimelineListBox" Background="Transparent">
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="4"/>
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Style>
+                </ListBox.Styles>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+            </ListBox>
+
+        </DockPanel>
+
         <DockPanel DockPanel.Dock="Bottom">
             <Label Content="{Binding #Rectangle1.Clock^}"
                    HorizontalContentAlignment="Center"
@@ -45,10 +85,33 @@
             <Slider Name="Slider" 
                     Margin="4"/>
         </DockPanel>
-        <Panel Name="Panel">
-            <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red"/>
-            <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red"/>
-            <!-- <Rectangle Classes="animation" Name="Rectangle" Width="100" Height="100" Fill="Red"/> -->
-        </Panel>  
+        
+        <DockPanel DockPanel.Dock="Left" Margin="0,12,0,12">
+            <TreeView Name="VisualTreeView" DockPanel.Dock="Left">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="4"/>
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Style>
+                </TreeView.Styles>
+                <TreeViewItem Header="Panel1" IsExpanded="True">
+                    <TreeViewItem Header="Rectangle1"/>
+                    <TreeViewItem Header="Rectangle2"/>
+                </TreeViewItem>
+            </TreeView>
+        </DockPanel>
+
+        <Panel Margin="12">
+            <Panel Name="Panel" Background="White">
+
+                <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red"/>
+                <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red"/>
+                <!-- <Rectangle Classes="animation" Name="Rectangle" Width="100" Height="100" Fill="Red"/> -->
+
+            </Panel>  
+        </Panel>
+
     </DockPanel>
 </Window>
