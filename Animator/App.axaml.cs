@@ -45,7 +45,7 @@ namespace Animator
                         Selector = "",
                         Setters = new ObservableCollection<SetterViewModel>()
                         {
-                            new SetterViewModel() { Property = "", Value = "" }
+                            new SetterViewModel() { Property = "Opacity", Value = "1.0" }
                         },
                         Animations = new ObservableCollection<AnimationViewModel>()
                         {
