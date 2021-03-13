@@ -80,6 +80,8 @@
                 <ListBoxItem Content="-"/>
                 <ListBoxItem Content="-"/>
                 <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
+                <ListBoxItem Content="-"/>
             </ListBox>
 
         </DockPanel>
