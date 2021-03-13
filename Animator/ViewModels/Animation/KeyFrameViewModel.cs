@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Animator.ViewModels.Style;
 using ReactiveUI;
 
 namespace Animator.ViewModels.Animation

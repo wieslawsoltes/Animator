@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Animator.ViewModels.Animation
+namespace Animator.ViewModels.Style
 {
     public class SetterViewModel : ViewModelBase
     {
