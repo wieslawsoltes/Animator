@@ -2,8 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Animator.ViewModels"
+        xmlns:vma="using:Animator.ViewModels.Animation"
+        xmlns:vms="using:Animator.ViewModels.Style"
         mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
         x:Class="Animator.MainWindow"
+        x:DataType="vm:ProjectViewModel" x:CompileBindings="True"
         Name="MainWindow"
         Title="Animator">
     <Window.Styles>
@@ -23,23 +27,42 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
 
-            <TreeView Name="AnimationTreeView" DockPanel.Dock="Left">
+            <TreeView Name="AnimationTreeView" Items="{Binding Styles}" Width="300" DockPanel.Dock="Left">
                 <TreeView.Styles>
                     <Style Selector="TreeViewItem">
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="4"/>
                         <Setter Property="BorderBrush" Value="DarkGray"/>
                         <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                        <Setter Property="IsExpanded" Value="True"/>
                     </Style>
                 </TreeView.Styles>
-                <TreeViewItem Header="animation1" IsExpanded="True">
-                    <TreeViewItem Header="Visual.OpacityProperty"/>
-                    <TreeViewItem Header="RotateTransform.AngleProperty"/>
-                </TreeViewItem>
-                <TreeViewItem Header="animation2" IsExpanded="True">
-                    <TreeViewItem Header="Visual.OpacityProperty"/>
-                    <TreeViewItem Header="RotateTransform.AngleProperty"/>
-                </TreeViewItem>
+                <TreeView.DataTemplates>
+                    <TreeDataTemplate DataType="vms:StyleViewModel" x:DataType="vms:StyleViewModel" ItemsSource="{Binding Animations}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </TreeDataTemplate>
+                    <TreeDataTemplate DataType="vma:AnimationViewModel" x:DataType="vma:AnimationViewModel" ItemsSource="{Binding KeyFrames}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </TreeDataTemplate>
+                    <TreeDataTemplate DataType="vma:KeyFrameViewModel" x:DataType="vma:KeyFrameViewModel" ItemsSource="{Binding Setters}">
+                        <TextBlock Text="Setters"/>
+                    </TreeDataTemplate>
+                    <DataTemplate DataType="vms:SetterViewModel" x:DataType="vms:SetterViewModel">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Property}"/>
+                            <TextBlock Text=" = "/>
+                            <TextBlock Text="{Binding Value}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.DataTemplates>
+                <!-- <TreeViewItem Header="animation1" IsExpanded="True"> -->
+                <!--     <TreeViewItem Header="Visual.OpacityProperty"/> -->
+                <!--     <TreeViewItem Header="RotateTransform.AngleProperty"/> -->
+                <!-- </TreeViewItem> -->
+                <!-- <TreeViewItem Header="animation2" IsExpanded="True"> -->
+                <!--     <TreeViewItem Header="Visual.OpacityProperty"/> -->
+                <!--     <TreeViewItem Header="RotateTransform.AngleProperty"/> -->
+                <!-- </TreeViewItem> -->
             </TreeView>
 
             <ListBox Name="TimelineListBox" Background="Transparent">
