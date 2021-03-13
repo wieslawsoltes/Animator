@@ -1,5 +1,10 @@
 using System;
+using System.Linq;
 using System.Reactive.Subjects;
+using System.Text;
+using Animator.ViewModels;
+using Animator.ViewModels.Animation;
+using Animator.ViewModels.Style;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
@@ -164,6 +169,60 @@ namespace Animator
                     break;
                 }
             }
+        }
+
+        private void LoadButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            var projectViewModel = DataContext as ProjectViewModel;
+            var style = ToStyle(projectViewModel.Styles.FirstOrDefault());
+        }
+
+        private static string ToXaml(StyleViewModel styleViewModel)
+        {
+            var tab = "  ";
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"<Style Selector=\"{styleViewModel.Selector}\" xmlns=\"https://github.com/avaloniaui\">");
+
+            foreach (var setterViewModel in styleViewModel.Setters)
+            {
+                sb.AppendLine($"{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+            }
+
+            sb.AppendLine($"{tab}<Style.Animations>");
+
+            foreach (var animationViewModel in styleViewModel.Animations)
+            {
+                sb.AppendLine($"{tab}{tab}<Animation Delay=\"{animationViewModel.Delay}\" Duration=\"{animationViewModel.Duration}\">");
+
+                foreach (var keyFrameViewModel in animationViewModel.KeyFrames)
+                {
+                    sb.AppendLine($"{tab}{tab}{tab}<KeyFrame KeyTime=\"{keyFrameViewModel.KeyTime}\">");
+
+                    foreach (var setterViewModel in keyFrameViewModel.Setters)
+                    {
+                        sb.AppendLine($"{tab}{tab}{tab}{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+                    }
+
+                    sb.AppendLine($"{tab}{tab}{tab}</KeyFrame>");
+                }
+
+                sb.AppendLine($"{tab}{tab}</Animation>");
+            }
+
+            sb.AppendLine($"{tab}</Style.Animations>");
+
+            sb.AppendLine($"</Style>");
+
+            var xaml = sb.ToString();
+            return xaml;
+        }
+
+        private static Style ToStyle(StyleViewModel styleViewModel)
+        {
+            var xaml = ToXaml(styleViewModel);
+            var style = AvaloniaRuntimeXamlLoader.Parse<Style>(xaml);
+            return style;
         }
 
         private void CreateAnimation1()
