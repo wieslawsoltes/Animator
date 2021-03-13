@@ -77,6 +77,14 @@
                     Width="60"
                     Margin="4"
                     DockPanel.Dock="Right"/>
+            <Button Name="LoadButton"
+                    Content="Load"
+                    Click="LoadButton_OnClick"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Width="60"
+                    Margin="4"
+                    DockPanel.Dock="Right"/>
             <NumericUpDown Name="NumericUpDown"
                            Value="{Binding #Slider.Value}"
                            VerticalAlignment="Center"
