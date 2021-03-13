@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using Animator.ViewModels;
 using Animator.ViewModels.Animation;
@@ -51,20 +52,26 @@ namespace Animator
                             new AnimationViewModel()
                             {
                                 Name = "animation1",
+                                Duration = TimeSpan.FromSeconds(2),
+                                Delay = TimeSpan.FromSeconds(0),
                                 KeyFrames = new ObservableCollection<KeyFrameViewModel>()
                                 {
                                     new KeyFrameViewModel()
                                     {
+                                        KeyTime = TimeSpan.FromSeconds(0),
                                         Setters = new ObservableCollection<SetterViewModel>()
                                         {
-                                            new SetterViewModel() { Property = "", Value = "" }
+                                            new SetterViewModel() { Property = "Opacity", Value = "1.0" },
+                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "0d" },
                                         }
                                     },
                                     new KeyFrameViewModel()
                                     {
+                                        KeyTime = TimeSpan.FromSeconds(2),
                                         Setters = new ObservableCollection<SetterViewModel>()
                                         {
-                                            new SetterViewModel() { Property = "", Value = "" }
+                                            new SetterViewModel() { Property = "Opacity", Value = "0.0" },
+                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "360d" },
                                         }
                                     }
                                 }
