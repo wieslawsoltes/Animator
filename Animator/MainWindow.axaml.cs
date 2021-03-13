@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using Animator.ViewModels;
-using Animator.ViewModels.Animation;
 using Animator.ViewModels.Style;
 using Avalonia;
 using Avalonia.Animation;
