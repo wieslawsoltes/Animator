@@ -42,7 +42,7 @@ namespace Animator
                     new StyleViewModel()
                     {
                         Name = "style1",
-                        Selector = "",
+                        Selector = "Rectangle.animation",
                         Setters = new ObservableCollection<SetterViewModel>()
                         {
                             new SetterViewModel() { Property = "Opacity", Value = "1.0" }
@@ -62,7 +62,7 @@ namespace Animator
                                         Setters = new ObservableCollection<SetterViewModel>()
                                         {
                                             new SetterViewModel() { Property = "Opacity", Value = "1.0" },
-                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "0d" },
+                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "0" },
                                         }
                                     },
                                     new KeyFrameViewModel()
@@ -71,7 +71,7 @@ namespace Animator
                                         Setters = new ObservableCollection<SetterViewModel>()
                                         {
                                             new SetterViewModel() { Property = "Opacity", Value = "0.0" },
-                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "360d" },
+                                            new SetterViewModel() { Property = "RotateTransform.Angle", Value = "360" },
                                         }
                                     }
                                 }
