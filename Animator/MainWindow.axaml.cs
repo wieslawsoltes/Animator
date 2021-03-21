@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using Animator.ViewModels;
+using Animator.ViewModels.Animation;
 using Animator.ViewModels.Style;
 using Avalonia;
 using Avalonia.Animation;
@@ -176,6 +177,25 @@ namespace Animator
             var style = ToStyle(projectViewModel.Styles.FirstOrDefault());
         }
 
+        private static void ToXaml(AnimationViewModel animationViewModel, StringBuilder sb, string tab)
+        {
+            sb.AppendLine($"{tab}{tab}<Animation Delay=\"{animationViewModel.Delay}\" Duration=\"{animationViewModel.Duration}\">");
+
+            foreach (var keyFrameViewModel in animationViewModel.KeyFrames)
+            {
+                sb.AppendLine($"{tab}{tab}{tab}<KeyFrame KeyTime=\"{keyFrameViewModel.KeyTime}\">");
+
+                foreach (var setterViewModel in keyFrameViewModel.Setters)
+                {
+                    sb.AppendLine($"{tab}{tab}{tab}{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+                }
+
+                sb.AppendLine($"{tab}{tab}{tab}</KeyFrame>");
+            }
+
+            sb.AppendLine($"{tab}{tab}</Animation>");
+        }
+
         private static string ToXaml(StyleViewModel styleViewModel)
         {
             var tab = "  ";
@@ -192,21 +212,7 @@ namespace Animator
 
             foreach (var animationViewModel in styleViewModel.Animations)
             {
-                sb.AppendLine($"{tab}{tab}<Animation Delay=\"{animationViewModel.Delay}\" Duration=\"{animationViewModel.Duration}\">");
-
-                foreach (var keyFrameViewModel in animationViewModel.KeyFrames)
-                {
-                    sb.AppendLine($"{tab}{tab}{tab}<KeyFrame KeyTime=\"{keyFrameViewModel.KeyTime}\">");
-
-                    foreach (var setterViewModel in keyFrameViewModel.Setters)
-                    {
-                        sb.AppendLine($"{tab}{tab}{tab}{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
-                    }
-
-                    sb.AppendLine($"{tab}{tab}{tab}</KeyFrame>");
-                }
-
-                sb.AppendLine($"{tab}{tab}</Animation>");
+                ToXaml(animationViewModel, sb, tab);
             }
 
             sb.AppendLine($"{tab}</Style.Animations>");
