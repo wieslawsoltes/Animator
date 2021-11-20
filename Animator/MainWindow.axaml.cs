@@ -38,8 +38,8 @@ namespace Animator
         private Subject<bool> _animationTrigger;
         private Animation? _animation1;
         private Animation? _animation2;
-        private IDisposable? _disposable1;
-        private IDisposable? _disposable2;
+        // private IDisposable? _disposable1;
+        // private IDisposable? _disposable2;
         private double _minimum;
         private double _maximum;
         private double _step;
@@ -181,12 +181,15 @@ namespace Animator
         {
             if (DataContext is ProjectViewModel projectViewModel)
             {
-                var styleViewModel = projectViewModel.Styles.FirstOrDefault();
-                if (styleViewModel is { })
+                if (projectViewModel.Styles is { })
                 {
-                    var style = ToStyle(styleViewModel);
-                    
-                    // TODO:
+                    var styleViewModel = projectViewModel.Styles.FirstOrDefault();
+                    if (styleViewModel is { })
+                    {
+                        var style = ToStyle(styleViewModel);
+
+                        // TODO:
+                    }
                 }
             }
         }
