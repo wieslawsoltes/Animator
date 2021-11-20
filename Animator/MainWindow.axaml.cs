@@ -38,7 +38,7 @@ namespace Animator
         private Subject<bool> _animationTrigger;
         private Animation? _animation1;
         private Animation? _animation2;
-        private IDisposable _disposable1;
+        private IDisposable? _disposable1;
         private IDisposable? _disposable2;
         private double _minimum;
         private double _maximum;
@@ -117,8 +117,8 @@ namespace Animator
             //_animation2.RunAsync(_rectangle2, _timelineClock);
             //_timelineClock.Step(TimeSpan.FromMilliseconds(0));
 
-            _animation1.RunAsync(_rectangle1, _playbackClock);
-            _animation2.RunAsync(_rectangle2, _playbackClock);
+            _animation1?.RunAsync(_rectangle1, _playbackClock);
+            _animation2?.RunAsync(_rectangle2, _playbackClock);
 
             _playbackClock.PlayState = PlayState.Run;
             //_animationTrigger.OnNext(true);
@@ -153,14 +153,20 @@ namespace Animator
                         _playbackClock.PlayState = PlayState.Pause;
                         //_animationTrigger.OnNext(false);
                         _isPlaying = false;
-                        _playButton.Content = "Play";
+                        if (_playButton is { })
+                        {
+                            _playButton.Content = "Play";
+                        }
                     }
                     else
                     {
                         _playbackClock.PlayState = PlayState.Run;
                         //_animationTrigger.OnNext(true);
                         _isPlaying = true;
-                        _playButton.Content = "Stop";
+                        if (_playButton is { })
+                        {
+                            _playButton.Content = "Stop";
+                        }
                     }
                     //_animation1.RunAsync(_rectangle1, _timelineClock);
                     //_animation2.RunAsync(_rectangle2, _timelineClock);
@@ -173,24 +179,39 @@ namespace Animator
 
         private void LoadButton_OnClick(object? sender, RoutedEventArgs e)
         {
-            var projectViewModel = DataContext as ProjectViewModel;
-            var style = ToStyle(projectViewModel.Styles.FirstOrDefault());
+            if (DataContext is ProjectViewModel projectViewModel)
+            {
+                var styleViewModel = projectViewModel.Styles.FirstOrDefault();
+                if (styleViewModel is { })
+                {
+                    var style = ToStyle(styleViewModel);
+                    
+                    // TODO:
+                }
+            }
         }
 
         private static void ToXaml(AnimationViewModel animationViewModel, StringBuilder sb, string tab)
         {
             sb.AppendLine($"{tab}{tab}<Animation Delay=\"{animationViewModel.Delay}\" Duration=\"{animationViewModel.Duration}\">");
 
-            foreach (var keyFrameViewModel in animationViewModel.KeyFrames)
+            if (animationViewModel.KeyFrames is { })
             {
-                sb.AppendLine($"{tab}{tab}{tab}<KeyFrame KeyTime=\"{keyFrameViewModel.KeyTime}\">");
-
-                foreach (var setterViewModel in keyFrameViewModel.Setters)
+                foreach (var keyFrameViewModel in animationViewModel.KeyFrames)
                 {
-                    sb.AppendLine($"{tab}{tab}{tab}{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
-                }
+                    sb.AppendLine($"{tab}{tab}{tab}<KeyFrame KeyTime=\"{keyFrameViewModel.KeyTime}\">");
 
-                sb.AppendLine($"{tab}{tab}{tab}</KeyFrame>");
+                    if (keyFrameViewModel.Setters is { })
+                    {
+                        foreach (var setterViewModel in keyFrameViewModel.Setters)
+                        {
+                            sb.AppendLine(
+                                $"{tab}{tab}{tab}{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+                        }
+                    }
+
+                    sb.AppendLine($"{tab}{tab}{tab}</KeyFrame>");
+                }
             }
 
             sb.AppendLine($"{tab}{tab}</Animation>");
@@ -203,16 +224,23 @@ namespace Animator
 
             sb.AppendLine($"<Style Selector=\"{styleViewModel.Selector}\" xmlns=\"https://github.com/avaloniaui\">");
 
-            foreach (var setterViewModel in styleViewModel.Setters)
+            if (styleViewModel.Setters is { })
             {
-                sb.AppendLine($"{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+                foreach (var setterViewModel in styleViewModel.Setters)
+                {
+                    sb.AppendLine(
+                        $"{tab}<Setter Property=\"{setterViewModel.Property}\" Value=\"{setterViewModel.Value}\"/>");
+                }
             }
 
             sb.AppendLine($"{tab}<Style.Animations>");
 
-            foreach (var animationViewModel in styleViewModel.Animations)
+            if (styleViewModel.Animations is { })
             {
-                ToXaml(animationViewModel, sb, tab);
+                foreach (var animationViewModel in styleViewModel.Animations)
+                {
+                    ToXaml(animationViewModel, sb, tab);
+                }
             }
 
             sb.AppendLine($"{tab}</Style.Animations>");

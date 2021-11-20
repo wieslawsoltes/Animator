@@ -8,7 +8,7 @@ namespace Animator.ViewModels.Animation
     public class KeyFrameViewModel : ViewModelBase
     {
         private TimeSpan _keyTime;
-        private ObservableCollection<SetterViewModel> _setters;
+        private ObservableCollection<SetterViewModel>? _setters;
 
         public TimeSpan KeyTime
         {
@@ -16,7 +16,7 @@ namespace Animator.ViewModels.Animation
             set => this.RaiseAndSetIfChanged(ref _keyTime, value);
         }
 
-        public ObservableCollection<SetterViewModel> Setters
+        public ObservableCollection<SetterViewModel>? Setters
         {
             get => _setters;
             set => this.RaiseAndSetIfChanged(ref _setters, value);

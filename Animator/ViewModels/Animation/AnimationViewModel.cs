@@ -6,12 +6,12 @@ namespace Animator.ViewModels.Animation
 {
     public class AnimationViewModel : ViewModelBase
     {
-        private string _name;
+        private string? _name;
         private TimeSpan _duration;
         private TimeSpan _delay;
-        private ObservableCollection<KeyFrameViewModel> _keyFrames;
+        private ObservableCollection<KeyFrameViewModel>? _keyFrames;
 
-        public string Name
+        public string? Name
         {
             get => _name;
             set => this.RaiseAndSetIfChanged(ref _name, value);
@@ -29,7 +29,7 @@ namespace Animator.ViewModels.Animation
             set => this.RaiseAndSetIfChanged(ref _delay, value);
         }
 
-        public ObservableCollection<KeyFrameViewModel> KeyFrames
+        public ObservableCollection<KeyFrameViewModel>? KeyFrames
         {
             get => _keyFrames;
             set => this.RaiseAndSetIfChanged(ref _keyFrames, value);
