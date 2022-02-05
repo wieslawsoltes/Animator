@@ -1,8 +1,7 @@
 ﻿using ReactiveUI;
 
-namespace Animator.ViewModels
+namespace Animator.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
-    public class ViewModelBase : ReactiveObject
-    {
-    }
 }
