@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -9,7 +9,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.10.12"/>
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.12"/>
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.12"/>
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="0.10.12"/>
-    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.178"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Animator\Animator.csproj"/>
   </ItemGroup>
 </Project>
