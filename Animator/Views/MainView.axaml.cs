@@ -36,9 +36,9 @@ public class MainView : UserControl
     private Animation? _animation2;
     // private IDisposable? _disposable1;
     // private IDisposable? _disposable2;
-    private double _minimum;
-    private double _maximum;
-    private double _step;
+    private decimal _minimum;
+    private decimal _maximum;
+    private decimal _step;
 
     public MainView()
     {
@@ -61,13 +61,13 @@ public class MainView : UserControl
         _playButton = this.FindControl<Button>("PlayButton");
             
         _slider = this.FindControl<Slider>("Slider");
-        _slider.Minimum = _minimum;
-        _slider.Maximum = _maximum;
-        _slider.SmallChange = _step;
-        _slider.LargeChange = _step;
-        _slider.TickFrequency = _step;
+        _slider.Minimum = (double)_minimum;
+        _slider.Maximum = (double)_maximum;
+        _slider.SmallChange = (double)_step;
+        _slider.LargeChange = (double)_step;
+        _slider.TickFrequency = (double)_step;
         _slider.IsSnapToTickEnabled = true;
-        _slider.Value = _minimum;
+        _slider.Value = (double)_minimum;
 
         _numericUpDown = this.FindControl<NumericUpDown>("NumericUpDown");
         _numericUpDown.Minimum = _minimum;
@@ -98,7 +98,7 @@ public class MainView : UserControl
                 return;
             }
             _sync = true;
-            var milliseconds = x.TotalMilliseconds % (_maximum + 1);
+            var milliseconds = x.TotalMilliseconds % ((double)_maximum + 1);
             _slider.Value = milliseconds;
             _sync = false;
         });
@@ -126,8 +126,7 @@ public class MainView : UserControl
     {
         AvaloniaXamlLoader.Load(this);
     }
-
-    
+  
     private void PlayButton_OnClick(object? sender, RoutedEventArgs e)
     {
         switch (_playbackMode)
