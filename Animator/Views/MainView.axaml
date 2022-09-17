@@ -143,9 +143,27 @@
     <Panel Margin="12">
       <Panel Name="Panel" Background="White">
 
-        <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red" />
-        <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red" />
-        <!-- <Rectangle Classes="animation" Name="Rectangle" Width="100" Height="100" Fill="Red"/> -->
+        <Rectangle Name="Rectangle1" Width="100" Height="100" Fill="Red">
+          <Rectangle.RenderTransform>
+            <TransformGroup>
+              <RotateTransform />
+            </TransformGroup>
+          </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Name="Rectangle2" Width="100" Height="100" Fill="Red">
+          <Rectangle.RenderTransform>
+            <TransformGroup>
+              <RotateTransform />
+            </TransformGroup>
+          </Rectangle.RenderTransform>
+        </Rectangle>
+        <!--<Rectangle Classes="animation" Name="Rectangle" Width="100" Height="100" Fill="Red">
+          <Rectangle.RenderTransform>
+            <TransformGroup>
+              <RotateTransform />
+            </TransformGroup>
+          </Rectangle.RenderTransform>
+        </Rectangle>-->
 
       </Panel>
     </Panel>
