@@ -2,11 +2,10 @@
 using Animator.ViewModels.Animation;
 using Animator.ViewModels.Style;
 using Avalonia.Markup.Xaml;
-using Avalonia.Styling;
 
-namespace Animator.Views;
+namespace Animator.ViewModels;
 
-public class ViewModelConverter
+public static class ViewModelConverter
 {
     public static void ToXaml(AnimationViewModel animationViewModel, StringBuilder sb, string tab)
     {
@@ -68,10 +67,10 @@ public class ViewModelConverter
         return xaml;
     }
 
-    public static Style ToStyle(StyleViewModel styleViewModel)
+    public static Avalonia.Styling.Style ToStyle(StyleViewModel styleViewModel)
     {
         var xaml = ToXaml(styleViewModel);
-        var style = AvaloniaRuntimeXamlLoader.Parse<Style>(xaml);
+        var style = AvaloniaRuntimeXamlLoader.Parse<Avalonia.Styling.Style>(xaml);
         return style;
     }
 }

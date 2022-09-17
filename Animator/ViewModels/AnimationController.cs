@@ -8,7 +8,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
 
-namespace Animator.Views;
+namespace Animator.ViewModels;
 
 public class AnimationController
 {
@@ -22,14 +22,15 @@ public class AnimationController
     private IDisposable? _disposable1;
     private IDisposable? _disposable2;
 
-    private Animation? _animation1;
-    private Animation? _animation2;
+    private Avalonia.Animation.Animation? _animation1;
+    private Avalonia.Animation.Animation? _animation2;
 
     public AnimationController()
     {
         _playbackMode = PlaybackMode.Auto;
         _isPlaying = false;
         _playbackClock = new Clock1();
+        _playbackClock.PlayState = PlayState.Pause;
 
         _timelineClock = new TimelineClock();
         _animationTrigger = new Subject<bool>();
@@ -80,7 +81,7 @@ public class AnimationController
     
     public void CreateAnimation1()
     {
-        _animation1 = new Animation
+        _animation1 = new Avalonia.Animation.Animation
         {
             Duration = TimeSpan.FromSeconds(2),
             IterationCount = new IterationCount(0, IterationType.Infinite),
@@ -116,7 +117,7 @@ public class AnimationController
 
     public void CreateAnimation2()
     {
-        _animation2 = new Animation
+        _animation2 = new Avalonia.Animation.Animation
         {
             Duration = TimeSpan.FromSeconds(2),
             IterationCount = new IterationCount(0, IterationType.Infinite),

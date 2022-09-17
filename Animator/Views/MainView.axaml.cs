@@ -31,6 +31,53 @@ public class MainView : UserControl
 
         InitializeControls();
 
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+  
+    private void InitializeControls()
+    {
+        _rectangle1 = this.FindControl<Rectangle>("Rectangle1");
+        if (_rectangle1 is { })
+        {
+            _rectangle1.Clock = _animationController.PlaybackClock;
+        }
+
+        _rectangle2 = this.FindControl<Rectangle>("Rectangle2");
+        if (_rectangle2 is { })
+        {
+            _rectangle2.Clock = _animationController.PlaybackClock;
+        }
+
+        _minimum = 0;
+        _maximum = 4000;
+        _step = 1;
+
+        _playButton = this.FindControl<Button>("PlayButton");
+
+        _slider = this.FindControl<Slider>("Slider");
+        if (_slider is { })
+        {
+            _slider.Minimum = (double)_minimum;
+            _slider.Maximum = (double)_maximum;
+            _slider.SmallChange = (double)_step;
+            _slider.LargeChange = (double)_step;
+            _slider.TickFrequency = (double)_step;
+            _slider.IsSnapToTickEnabled = true;
+            _slider.Value = (double)_minimum;
+        }
+
+        _numericUpDown = this.FindControl<NumericUpDown>("NumericUpDown");
+        if (_numericUpDown is { })
+        {
+            _numericUpDown.Minimum = _minimum;
+            _numericUpDown.Maximum = _maximum;
+            _numericUpDown.Increment = _step;
+        }
+
         var sync = false;
 
         if (_slider is { })
@@ -86,55 +133,16 @@ public class MainView : UserControl
             _animationController.RunAnimation2(_rectangle2);
         }
 
+        _animationController.Play();
+
+        UpdatePlayButton();
+    }
+
+    private void UpdatePlayButton()
+    {
         if (_playButton is { })
         {
-            _playButton.Content = "Stop";
-        }
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-  
-    private void InitializeControls()
-    {
-        _rectangle1 = this.FindControl<Rectangle>("Rectangle1");
-        if (_rectangle1 is { })
-        {
-            _rectangle1.Clock = _animationController.PlaybackClock;
-        }
-
-        _rectangle2 = this.FindControl<Rectangle>("Rectangle2");
-        if (_rectangle2 is { })
-        {
-            _rectangle2.Clock = _animationController.PlaybackClock;
-        }
-
-        _minimum = 0;
-        _maximum = 4000;
-        _step = 1;
-
-        _playButton = this.FindControl<Button>("PlayButton");
-
-        _slider = this.FindControl<Slider>("Slider");
-        if (_slider is { })
-        {
-            _slider.Minimum = (double)_minimum;
-            _slider.Maximum = (double)_maximum;
-            _slider.SmallChange = (double)_step;
-            _slider.LargeChange = (double)_step;
-            _slider.TickFrequency = (double)_step;
-            _slider.IsSnapToTickEnabled = true;
-            _slider.Value = (double)_minimum;
-        }
-
-        _numericUpDown = this.FindControl<NumericUpDown>("NumericUpDown");
-        if (_numericUpDown is { })
-        {
-            _numericUpDown.Minimum = _minimum;
-            _numericUpDown.Maximum = _maximum;
-            _numericUpDown.Increment = _step;
+            _playButton.Content = _animationController.IsPlaying ? "Pause" : "Play";
         }
     }
 
@@ -142,20 +150,7 @@ public class MainView : UserControl
     {
         _animationController.TogglePlaybackMode();
 
-        if (_animationController.IsPlaying)
-        {
-            if (_playButton is { })
-            {
-                _playButton.Content = "Stop";
-            }
-        }
-        else
-        {
-            if (_playButton is { })
-            {
-                _playButton.Content = "Play";
-            }
-        }
+        UpdatePlayButton();
     }
 
     private void LoadButton_OnClick(object? sender, RoutedEventArgs e)
