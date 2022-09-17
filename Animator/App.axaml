@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Animator.App">
+             x:Class="Animator.App"
+             Name="Animator">
   <Application.Styles>
-    <StyleInclude Source="avares://Avalonia.Themes.Fluent/FluentDark.xaml" />
-    <StyleInclude Source="avares://Avalonia.Themes.Fluent/DensityStyles/Compact.xaml" />
+    <FluentTheme Mode="Dark" DensityStyle="Compact" />
   </Application.Styles>
 </Application>

@@ -3,7 +3,7 @@ using Animator.ViewModels.Animation;
 using Animator.ViewModels.Style;
 using Avalonia.Markup.Xaml;
 
-namespace Animator.ViewModels;
+namespace Animator.Services;
 
 public static class ViewModelConverter
 {

@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Linq;
+using Animator.Services;
 using Animator.ViewModels;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 namespace Animator.Views;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     private readonly AnimationController _animationController;
-    private Rectangle? _rectangle1;
-    private Rectangle? _rectangle2;
-    private Button? _playButton;
-    private Slider? _slider;
-    private NumericUpDown? _numericUpDown;
     private decimal _minimum;
     private decimal _maximum;
     private decimal _step;
@@ -29,77 +23,44 @@ public class MainView : UserControl
 
         _animationController = new AnimationController();
 
-        InitializeControls();
-
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-  
-    private void InitializeControls()
-    {
-        _rectangle1 = this.FindControl<Rectangle>("Rectangle1");
-        if (_rectangle1 is { })
-        {
-            _rectangle1.Clock = _animationController.PlaybackClock;
-        }
-
-        _rectangle2 = this.FindControl<Rectangle>("Rectangle2");
-        if (_rectangle2 is { })
-        {
-            _rectangle2.Clock = _animationController.PlaybackClock;
-        }
+        Rectangle1.Clock = _animationController.PlaybackClock;
+        Rectangle2.Clock = _animationController.PlaybackClock;
 
         _minimum = 0;
         _maximum = 4000;
         _step = 1;
 
-        _playButton = this.FindControl<Button>("PlayButton");
+        Slider.Minimum = (double)_minimum;
+        Slider.Maximum = (double)_maximum;
+        Slider.SmallChange = (double)_step;
+        Slider.LargeChange = (double)_step;
+        Slider.TickFrequency = (double)_step;
+        Slider.IsSnapToTickEnabled = true;
+        Slider.Value = (double)_minimum;
 
-        _slider = this.FindControl<Slider>("Slider");
-        if (_slider is { })
-        {
-            _slider.Minimum = (double)_minimum;
-            _slider.Maximum = (double)_maximum;
-            _slider.SmallChange = (double)_step;
-            _slider.LargeChange = (double)_step;
-            _slider.TickFrequency = (double)_step;
-            _slider.IsSnapToTickEnabled = true;
-            _slider.Value = (double)_minimum;
-        }
-
-        _numericUpDown = this.FindControl<NumericUpDown>("NumericUpDown");
-        if (_numericUpDown is { })
-        {
-            _numericUpDown.Minimum = _minimum;
-            _numericUpDown.Maximum = _maximum;
-            _numericUpDown.Increment = _step;
-        }
+        NumericUpDown.Minimum = _minimum;
+        NumericUpDown.Maximum = _maximum;
+        NumericUpDown.Increment = _step;
 
         var sync = false;
 
-        if (_slider is { })
+        Slider.GetObservable(RangeBase.ValueProperty).Subscribe(x =>
         {
-            _slider.GetObservable(RangeBase.ValueProperty).Subscribe(x =>
+            // _animationController.TimelineClock.Step(TimeSpan.FromMilliseconds(x));
+
+            if (sync)
             {
-                // _animationController.TimelineClock.Step(TimeSpan.FromMilliseconds(x));
+                return;
+            }
 
-                if (sync)
-                {
-                    return;
-                }
+            sync = true;
+            if (_animationController.PlaybackClock.PlayState == PlayState.Pause)
+            {
+                _animationController.PlaybackClock.Step(TimeSpan.FromMilliseconds(x));
+            }
 
-                sync = true;
-                if (_animationController.PlaybackClock.PlayState == PlayState.Pause)
-                {
-                    _animationController.PlaybackClock.Step(TimeSpan.FromMilliseconds(x));
-                }
-
-                sync = false;
-            });
-        }
+            sync = false;
+        });
 
         _animationController.PlaybackClock.Subscribe(x =>
         {
@@ -111,27 +72,17 @@ public class MainView : UserControl
             sync = true;
 
             var milliseconds = x.TotalMilliseconds % ((double)_maximum + 1);
-            if (_slider is { })
-            {
-                _slider.Value = milliseconds;
-            }
+
+            Slider.Value = milliseconds;
 
             sync = false;
         });
 
         _animationController.CreateAnimation1();
-
         _animationController.CreateAnimation2();
 
-        if (_rectangle1 is { })
-        {
-            _animationController.RunAnimation1(_rectangle1);
-        }
-
-        if (_rectangle2 is { })
-        {
-            _animationController.RunAnimation2(_rectangle2);
-        }
+        _animationController.RunAnimation1(Rectangle1);
+        _animationController.RunAnimation2(Rectangle2);
 
         _animationController.Play();
 
@@ -140,10 +91,7 @@ public class MainView : UserControl
 
     private void UpdatePlayButton()
     {
-        if (_playButton is { })
-        {
-            _playButton.Content = _animationController.IsPlaying ? "Pause" : "Play";
-        }
+        PlayButton.Content = _animationController.IsPlaying ? "Pause" : "Play";
     }
 
     private void PlayButton_OnClick(object? sender, RoutedEventArgs e)

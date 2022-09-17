@@ -8,7 +8,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
 
-namespace Animator.ViewModels;
+namespace Animator.Services;
 
 public class AnimationController
 {

@@ -1,30 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using Animator.ViewModels.Style;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Animator.ViewModels;
 
-public class ProjectViewModel : ViewModelBase
+public partial class ProjectViewModel : ViewModelBase
 {
-    private string? _name;
-    private string? _path;
-    private ObservableCollection<StyleViewModel>? _styles;
-
-    public string? Name
-    {
-        get => _name;
-        set => this.RaiseAndSetIfChanged(ref _name, value);
-    }
-
-    public string? Path
-    {
-        get => _path;
-        set => this.RaiseAndSetIfChanged(ref _path, value);
-    }
-
-    public ObservableCollection<StyleViewModel>? Styles
-    {
-        get => _styles;
-        set => this.RaiseAndSetIfChanged(ref _styles, value);
-    }
+    [ObservableProperty] private string? _name;
+    [ObservableProperty] private string? _path;
+    [ObservableProperty] private ObservableCollection<StyleViewModel>? _styles;
 }
