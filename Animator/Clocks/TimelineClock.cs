@@ -4,7 +4,7 @@ using Avalonia.Animation;
 
 namespace Animator.Clocks;
 
-internal class TimelineClock : IClock, IDisposable
+public class TimelineClock : IClock, IDisposable
 {
     private TimeSpan _curTime;
     private readonly List<IObserver<TimeSpan>> _observers;

@@ -4,7 +4,7 @@ using Avalonia.Animation;
 
 namespace Animator.Clocks;
 
-internal class Clock1 : ClockBase1
+public class Clock1 : ClockBase1
 {
     public static IClock? GlobalClock => AvaloniaLocator.Current.GetService<IGlobalClock>();
 

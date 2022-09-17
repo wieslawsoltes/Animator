@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Animator.Desktop;
+namespace Animator;
 
 class Program
 {

@@ -5,7 +5,7 @@ using Avalonia.Reactive;
 
 namespace Animator.Clocks;
 
-internal class ClockBase1 : IClock
+public class ClockBase1 : IClock
 {
     private ClockObservable _observable;
     private IObservable<TimeSpan> _connectedObservable;
