@@ -118,6 +118,7 @@
                      Value="{Binding #Slider.Value}"
                      VerticalAlignment="Center"
                      Margin="4"
+                     MinWidth="200"
                      DockPanel.Dock="Right" />
       <Slider Name="Slider"
               Margin="4" />
