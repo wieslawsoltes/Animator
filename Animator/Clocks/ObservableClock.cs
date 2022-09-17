@@ -5,14 +5,14 @@ using Avalonia.Reactive;
 
 namespace Animator.Clocks;
 
-public class ClockBase1 : IClock
+public class ObservableClock : IClock
 {
-    private ClockObservable _observable;
-    private IObservable<TimeSpan> _connectedObservable;
+    private readonly ClockObservable _observable;
+    private readonly IObservable<TimeSpan> _connectedObservable;
     private TimeSpan? _previousTime;
     private TimeSpan _internalTime;
 
-    protected ClockBase1()
+    protected ObservableClock()
     {
         _observable = new ClockObservable();
         _connectedObservable = _observable.Publish().RefCount();

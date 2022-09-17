@@ -4,18 +4,17 @@ using Avalonia.Animation;
 
 namespace Animator.Clocks;
 
-public class Clock1 : ClockBase1
+public class AnimationControllerClock : ObservableClock
 {
-    public static IClock? GlobalClock => AvaloniaLocator.Current.GetService<IGlobalClock>();
+    private static IClock? GlobalClock => AvaloniaLocator.Current.GetService<IGlobalClock>();
 
     private readonly IDisposable? _parentSubscription;
 
-    public Clock1()
-        : this(GlobalClock)
+    public AnimationControllerClock() : this(GlobalClock)
     {
     }
-        
-    public Clock1(IClock? parent)
+
+    private AnimationControllerClock(IClock? parent)
     {
         _parentSubscription = parent?.Subscribe(Pulse);
     }

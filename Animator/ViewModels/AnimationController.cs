@@ -15,7 +15,7 @@ public class AnimationController
     private PlaybackMode _playbackMode;
     private bool _isPlaying;
 
-    private Clock1 _playbackClock;
+    private AnimationControllerClock _playbackClock;
 
     private TimelineClock _timelineClock;
     private Subject<bool> _animationTrigger;
@@ -29,14 +29,14 @@ public class AnimationController
     {
         _playbackMode = PlaybackMode.Auto;
         _isPlaying = false;
-        _playbackClock = new Clock1();
+        _playbackClock = new AnimationControllerClock();
         _playbackClock.PlayState = PlayState.Pause;
 
         _timelineClock = new TimelineClock();
         _animationTrigger = new Subject<bool>();
     }
 
-    public Clock1 PlaybackClock => _playbackClock;
+    public AnimationControllerClock PlaybackClock => _playbackClock;
 
     public TimelineClock TimelineClock => _timelineClock;
 
