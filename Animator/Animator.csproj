@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>11.0.0-preview1</AvaloniaVersion>
+    <AvaloniaVersion>11.0.0-preview3</AvaloniaVersion>
     <CommunityToolkitMvvmVersion>8.0.0</CommunityToolkitMvvmVersion>
     <ReactiveMarblesPropertyChangedVersion>2.0.27</ReactiveMarblesPropertyChangedVersion>
   </PropertyGroup>
